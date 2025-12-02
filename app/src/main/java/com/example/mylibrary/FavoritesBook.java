@@ -12,6 +12,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mylibrary.data.repository.BookRepository;
+
 public class FavoritesBook extends AppCompatActivity {
 
     private BookRecViewAdapter adapter;
@@ -28,8 +30,11 @@ public class FavoritesBook extends AppCompatActivity {
             return insets;
         });
 
+
+        BookRepository bookRepository = new BookRepository(getApplication());
+
         bookRecView = findViewById(R.id.favoriteBookRecView);
-        adapter = new BookRecViewAdapter(this, "FavoriteBooks");
+        adapter = new BookRecViewAdapter(this, "FavoriteBooks", bookRepository);
 
         //adapter.setBooks(Utils.getInstance().getFavoriteBooks());
 

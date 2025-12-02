@@ -43,8 +43,10 @@ public LiveData<List<Book>> getAllBooks(){
     return bookDao.getAllBooks();
 }
 
-public void deleteBook(){
-        long rowid = bookDao.delete(book);
+public void deleteBook(Book book){
+        executorService.execute(()->{
+            bookDao.delete(book);
+        });
 }
 
 

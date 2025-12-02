@@ -37,7 +37,7 @@ public class AllBooksActivity extends AppCompatActivity {
 
         bookRepository = new BookRepository(getApplication());
 
-        adapter = new BookRecViewAdapter(this, "AllBooks");
+        adapter = new BookRecViewAdapter(this, "AllBooks", bookRepository);
 
         booksRecView = findViewById(R.id.bookRecView);
         booksRecView.setLayoutManager(new LinearLayoutManager(this));

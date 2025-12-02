@@ -12,6 +12,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mylibrary.data.repository.BookRepository;
+
 public class CurrentlyReadingBooks extends AppCompatActivity {
 
     private BookRecViewAdapter adapter;
@@ -28,9 +30,11 @@ public class CurrentlyReadingBooks extends AppCompatActivity {
             return insets;
         });
 
+        BookRepository bookRepository = new BookRepository(getApplication());
+
         currentlyReading = findViewById(R.id.currentlyReading);
         currentlyReading.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new BookRecViewAdapter(this, "CurrentReads");
+        adapter = new BookRecViewAdapter(this, "CurrentReads", bookRepository);
         //adapter.setBooks(Utils.getInstance().getCurrentlyReadingBooks());
         currentlyReading.setAdapter(adapter);
 

@@ -31,15 +31,16 @@ import java.util.List;
 public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.ViewHolder>{
     private static final String TAG = "BookRecViewAdapter";
 
-    BookRepository bookRepository;
     private List<Book> books = new ArrayList<>();
 
     private Context mContext;
     private String currentParent;
+    private final BookRepository bookRepository;
 
-    public BookRecViewAdapter(Context context, String parent){
+    public BookRecViewAdapter(Context context, String parent, BookRepository bookRepository){
         this.mContext = context;
         this.currentParent = parent;
+        this.bookRepository = bookRepository;
     }
 
     @NonNull
@@ -87,7 +88,31 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    bookRepository.
+                    Log.d(TAG, "onClick: deleted the book in allbooks");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setMessage("Are you sure you want to delete " + books.get(position).getName());
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Log.d(TAG, "onClick: deleted the book in allbooks");
+                            Book book = books.get(holder.getBindingAdapterPosition());
+                            Log.d(TAG, book.getName().toString());
+                            bookRepository.deleteBook(book);
+                            Toast.makeText(mContext, "The book selected has removed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+
+                    builder.show();
+
                 }
             });
 

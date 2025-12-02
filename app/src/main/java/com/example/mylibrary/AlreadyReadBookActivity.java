@@ -14,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mylibrary.data.repository.BookRepository;
+
 public class AlreadyReadBookActivity extends AppCompatActivity {
 
     private RecyclerView bookRecView;
@@ -31,7 +33,9 @@ public class AlreadyReadBookActivity extends AppCompatActivity {
             return insets;
         });
 
-        adapter = new BookRecViewAdapter(this, "AlreadyReadBooks");
+        BookRepository bookRepository = new BookRepository(getApplication());
+
+        adapter = new BookRecViewAdapter(this, "AlreadyReadBooks",bookRepository);
 
         bookRecView = findViewById(R.id.alreadyReadBookRecView);
         bookRecView.setLayoutManager(new LinearLayoutManager(this));
