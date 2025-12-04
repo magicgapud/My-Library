@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.data.model.Book;
+import com.example.mylibrary.data.repository.BookRepository;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,8 @@ public class BookActivity extends AppCompatActivity {
             txtAuthor, txtPagesLbl, txtPages;
 
     private ImageView imgBookImage;
+
+    BookRepository bookRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,35 +62,40 @@ public class BookActivity extends AppCompatActivity {
     }
 
     private void handleCurrentReads(Book book) {
-        ArrayList<Book> currentReads = Utils.getInstance().getCurrentlyReadingBooks();
-        boolean isExistCurrentReads = false;
+       // ArrayList<Book> currentReads = Utils.getInstance().getCurrentlyReadingBooks();
 
-        for(Book b: currentReads){
-            if(b.getId() == book.getId()){
-                isExistCurrentReads = true;
-            }
-        }
-
-        if (isExistCurrentReads){
-            btnCurrRead.setEnabled(false);
-        } else {
-            btnCurrRead.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(Utils.getInstance().addCurrentReads(book)){
-                        Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to " +
-                                "Currently Reading", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(BookActivity.this, CurrentlyReadingBooks.class);
-                        startActivity(intent);
-                    }else{
-                        Toast.makeText(BookActivity.this, "Something went wrong!!",
-                                Toast.LENGTH_SHORT).show();
+        bookRepository.getCurrentReads().observe(this,
+                currentReads -> {
+                    boolean isExistCurrentReads = false;
+                    for(Book b: currentReads){
+                        if(b.getId() == book.getId()){
+                            isExistCurrentReads = true;
+                        }
                     }
-                }
-            });
-        }
 
-    }
+                    if (isExistCurrentReads){
+                        btnCurrRead.setEnabled(false);
+                    } else {
+                        btnCurrRead.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if(Utils.getInstance().addCurrentReads(book)){
+                                    Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to " +
+                                            "Currently Reading", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(BookActivity.this, CurrentlyReadingBooks.class);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(BookActivity.this, "Something went wrong!!",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+
+                });
+    };
+
+
 
     private void handleFavoriteBook(Book incomingBook) {
         ArrayList<Book> favoriteBooks = Utils.getInstance().getFavoriteBooks();

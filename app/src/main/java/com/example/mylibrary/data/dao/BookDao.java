@@ -20,11 +20,14 @@ public interface BookDao {
     @Query("SELECT * FROM book")
     LiveData<List<Book>> getAllBooks();
 
+    @Query("SELECT * FROM book WHERE currentBooks = 'Y'")
+    LiveData<List<Book>> getCurrentReads();
+
     @Query("SELECT * FROM book WHERE id = :id LIMIT 1")
     Book findById(int id);
 
     @Update
-    void update(Book book);
+    long addCurrentRead(Book book);
 
     @Delete
     void delete(Book book);

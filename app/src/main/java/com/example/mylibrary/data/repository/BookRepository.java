@@ -15,8 +15,8 @@ import java.util.concurrent.Executors;
 
 public class BookRepository {
 
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private BookDao bookDao;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final BookDao bookDao;
     private LiveData<List<Book>> allBooks;
     private Book book;
     public BookRepository(Application application){
@@ -49,5 +49,19 @@ public void deleteBook(Book book){
         });
 }
 
+public LiveData<List<Book>> getCurrentReads(){
+    return bookDao.getCurrentReads();
+}
+
+public void addCurrentRead(Book book, InsertCallback callback) {
+    executorService.execute(() -> {
+        long rowId = bookDao.addCurrentRead(book);
+
+        boolean result = rowId > 0;
+
+        callback.onResult(result);
+    });
+
+}
 
 }
