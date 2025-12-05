@@ -17,17 +17,17 @@ public interface BookDao {
     @Insert
     long insert(Book book);
 
-    @Query("SELECT * FROM book")
+    @Query("SELECT * FROM Book")
     LiveData<List<Book>> getAllBooks();
 
-    @Query("SELECT * FROM book WHERE currentBooks = 'Y'")
+    @Query("SELECT * FROM Book WHERE currentBooks = 'Y'")
     LiveData<List<Book>> getCurrentReads();
 
-    @Query("SELECT * FROM book WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM Book WHERE id = :id LIMIT 1")
     Book findById(int id);
 
-    @Update
-    long addCurrentRead(Book book);
+    @Query("UPDATE Book SET currentBooks  = 'Y' WHERE id = :id")
+    int addCurrentRead(int id);
 
     @Delete
     void delete(Book book);

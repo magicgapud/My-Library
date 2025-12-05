@@ -79,15 +79,20 @@ public class BookActivity extends AppCompatActivity {
                         btnCurrRead.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                if(Utils.getInstance().addCurrentReads(book)){
-                                    Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to " +
-                                            "Currently Reading", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(BookActivity.this, CurrentlyReadingBooks.class);
-                                    startActivity(intent);
-                                }else{
-                                    Toast.makeText(BookActivity.this, "Something went wrong!!",
-                                            Toast.LENGTH_SHORT).show();
-                                }
+
+                                bookRepository.addCurrentRead(book.getId(), success -> {
+                                    runOnUiThread(() -> {
+                                        if(success){
+                                            Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to " +
+                                                    "Currently Reading", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(BookActivity.this, CurrentlyReadingBooks.class);
+                                            startActivity(intent);
+                                        }else{
+                                            Toast.makeText(BookActivity.this, "Something went wrong!!",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                });
                             }
                         });
                     }
