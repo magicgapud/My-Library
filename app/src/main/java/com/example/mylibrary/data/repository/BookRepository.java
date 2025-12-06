@@ -35,8 +35,8 @@ public void addBook(Book book, InsertCallback callback){
         });
 }
 
-public Book getBook(){
-        return book;
+public LiveData<Book> findById(int id){
+        return bookDao.findById(id);
 }
 
 public LiveData<List<Book>> getAllBooks(){

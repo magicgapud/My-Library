@@ -24,7 +24,7 @@ public interface BookDao {
     LiveData<List<Book>> getCurrentReads();
 
     @Query("SELECT * FROM Book WHERE id = :id LIMIT 1")
-    Book findById(int id);
+    LiveData<Book> findById(int id);
 
     @Query("UPDATE Book SET currentBooks  = 'Y' WHERE id = :id")
     int addCurrentRead(int id);

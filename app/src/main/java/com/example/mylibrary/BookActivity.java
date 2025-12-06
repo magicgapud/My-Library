@@ -44,18 +44,22 @@ public class BookActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (null != intent) {
+
+            bookRepository = new BookRepository(getApplication());
             int bookId = intent.getIntExtra("bookId", -1);
             if (bookId != -1) {
-                Book incomingBook = Utils.getInstance().getBookById(bookId);
-                if (null != incomingBook) {
-                    setData(incomingBook);
+                bookRepository.findById(bookId).observe(this, book -> {
+                    if (null != book) {
+                        setData(book);
 
-                    handleAlreadyReadBook(incomingBook);
-                    handleWantToReadBook(incomingBook);
-                    handleFavoriteBook(incomingBook);
-                    handleCurrentReads(incomingBook);
+                        handleAlreadyReadBook(book);
+                        handleWantToReadBook(book);
+                        handleFavoriteBook(book);
+                        handleCurrentReads(book);
 
-                }
+                    }
+
+                });
             }
 
         }
