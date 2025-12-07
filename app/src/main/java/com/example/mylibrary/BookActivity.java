@@ -2,6 +2,7 @@ package com.example.mylibrary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ public class BookActivity extends AppCompatActivity {
             txtAuthor, txtPagesLbl, txtPages;
 
     private ImageView imgBookImage;
+    private static final String TAG = "BookActivity";
 
     BookRepository bookRepository;
 
@@ -83,8 +85,10 @@ public class BookActivity extends AppCompatActivity {
                         btnCurrRead.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
-                                bookRepository.addCurrentRead(book.getId(), success -> {
+                                Log.d(TAG, "onCreate: this is it "+book.getId());
+                                bookRepository = new BookRepository(getApplication());
+                                bookRepository.addCurrentRead(book.getId()
+                                        , success -> {
                                     runOnUiThread(() -> {
                                         if(success){
                                             Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to " +
