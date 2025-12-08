@@ -18,6 +18,7 @@ public class CurrentlyReadingBooks extends AppCompatActivity {
 
     private BookRecViewAdapter adapter;
     private RecyclerView currentlyReading;
+    private BookRepository bookRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,10 @@ public class CurrentlyReadingBooks extends AppCompatActivity {
         currentlyReading.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BookRecViewAdapter(this, "CurrentReads", bookRepository);
         //adapter.setBooks(Utils.getInstance().getCurrentlyReadingBooks());
+        bookRepository = new BookRepository(getApplication());
+        bookRepository.getCurrentReads().observe(this,book ->{
+                adapter.setBooks(book);
+        });
         currentlyReading.setAdapter(adapter);
 
 

@@ -49,8 +49,10 @@ public class BookActivity extends AppCompatActivity {
 
             bookRepository = new BookRepository(getApplication());
             int bookId = intent.getIntExtra("bookId", -1);
+            Log.d(TAG, "onCreate: "+ bookId);
             if (bookId != -1) {
                 bookRepository.findById(bookId).observe(this, book -> {
+                    Log.d(TAG, "onCreate: "+ book.getId() + "sample");
                     if (null != book) {
                         setData(book);
 
@@ -68,44 +70,34 @@ public class BookActivity extends AppCompatActivity {
     }
 
     private void handleCurrentReads(Book book) {
-       // ArrayList<Book> currentReads = Utils.getInstance().getCurrentlyReadingBooks();
-
-        bookRepository.getCurrentReads().observe(this,
-                currentReads -> {
-                    boolean isExistCurrentReads = false;
-                    for(Book b: currentReads){
-                        if(b.getId() == book.getId()){
-                            isExistCurrentReads = true;
-                        }
-                    }
-
-                    if (isExistCurrentReads){
-                        btnCurrRead.setEnabled(false);
+        btnCurrRead.setOnClickListener(view -> {
+            bookRepository.addCurrentRead(book.getId(), success -> {
+                runOnUiThread(()->{
+                    if (success) {
+                        Toast.makeText(this,
+                                "Saved " + book.getName() + " to Currently Reading",
+                                Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(BookActivity.this, CurrentlyReadingBooks.class));
                     } else {
-                        btnCurrRead.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Log.d(TAG, "onCreate: this is it "+book.getId());
-                                bookRepository = new BookRepository(getApplication());
-                                bookRepository.addCurrentRead(book.getId()
-                                        , success -> {
-                                    runOnUiThread(() -> {
-                                        if(success){
-                                            Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to " +
-                                                    "Currently Reading", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(BookActivity.this, CurrentlyReadingBooks.class);
-                                            startActivity(intent);
-                                        }else{
-                                            Toast.makeText(BookActivity.this, "Something went wrong!!",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                });
-                            }
-                        });
+                        Toast.makeText(this,
+                                "Something went wrong!!",
+                                Toast.LENGTH_SHORT).show();
                     }
-
                 });
+
+            });
+        });
+
+        bookRepository.getCurrentReads().observe(this, currentReads -> {
+            boolean exists = false;
+            for (Book b : currentReads) {
+                if (b.getId() == book.getId()) {
+                    exists = true;
+                    break;
+                }
+            }
+            btnCurrRead.setEnabled(!exists);
+        });
     };
 
 

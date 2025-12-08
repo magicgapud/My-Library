@@ -55,12 +55,18 @@ public LiveData<List<Book>> getCurrentReads(){
 
 public void addCurrentRead(int id, InsertCallback callback) {
     executorService.execute(() -> {
-        int rowId = bookDao.addCurrentRead(book.getId());
+        int rowId = bookDao.addCurrentRead(id);
 
         boolean result = rowId > 0;
 
         callback.onResult(result);
     });
+}
+
+public void deleteCurrentReads(Book book){
+        executorService.execute(()->{
+            bookDao.deleteCurrentReads(book.getId());
+        });
 }
 
 }

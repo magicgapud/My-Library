@@ -32,5 +32,8 @@ public interface BookDao {
     @Delete
     void delete(Book book);
 
+    @Query("UPDATE Book SET currentBooks  = 'N' WHERE id = :id")
+    void deleteCurrentReads(int id);
+
 
 }

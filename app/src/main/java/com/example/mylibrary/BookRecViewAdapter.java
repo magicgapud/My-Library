@@ -35,7 +35,7 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
 
     private Context mContext;
     private String currentParent;
-    private final BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     public BookRecViewAdapter(Context context, String parent, BookRepository bookRepository){
         this.mContext = context;
@@ -127,7 +127,7 @@ public class BookRecViewAdapter extends RecyclerView.Adapter<BookRecViewAdapter.
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Book book = books.get(holder.getBindingAdapterPosition());
-                           // TO DO: Utils.getInstance().removeCurrentReads(book);
+                            bookRepository.deleteCurrentReads(book);
                             notifyItemChanged(holder.getBindingAdapterPosition());
                             Toast.makeText(mContext, "The book selected has removed.",
                                     Toast.LENGTH_SHORT).show();
