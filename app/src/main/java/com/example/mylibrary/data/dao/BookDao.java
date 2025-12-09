@@ -35,5 +35,8 @@ public interface BookDao {
     @Query("UPDATE Book SET currentBooks  = 'N' WHERE id = :id")
     void deleteCurrentReads(int id);
 
+    @Query("SELECT * FROM Book WHERE favorite = 'Y'")
+    LiveData<List<Book>> getFaveBook();
+
 
 }

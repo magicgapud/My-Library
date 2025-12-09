@@ -1,5 +1,7 @@
 package com.example.mylibrary;
 
+import static com.example.mylibrary.Utils.favoriteBooks;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -103,7 +105,19 @@ public class BookActivity extends AppCompatActivity {
 
 
     private void handleFavoriteBook(Book incomingBook) {
-        ArrayList<Book> favoriteBooks = Utils.getInstance().getFavoriteBooks();
+        //ArrayList<Book> favoriteBooks = Utils.getInstance().getFavoriteBooks();
+        
+        bookRepository.getFaveBook().observe(this,favorite -> {
+            boolean exists = false;
+            for (Book b: favorite){
+                if(b.getId() == incomingBook.getId()){
+                    exists = true;
+                    break;
+                }
+            }
+            btnAddFavorites.setEnabled(!exists);
+        });
+        
         boolean isExistFavorites = false;
 
         for(Book b: favoriteBooks){

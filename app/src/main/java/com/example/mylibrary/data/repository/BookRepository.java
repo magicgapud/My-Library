@@ -17,6 +17,7 @@ public class BookRepository {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final BookDao bookDao;
+
     private LiveData<List<Book>> allBooks;
     private Book book;
     public BookRepository(Application application){
@@ -58,7 +59,6 @@ public void addCurrentRead(int id, InsertCallback callback) {
         int rowId = bookDao.addCurrentRead(id);
 
         boolean result = rowId > 0;
-
         callback.onResult(result);
     });
 }
@@ -68,5 +68,11 @@ public void deleteCurrentReads(Book book){
             bookDao.deleteCurrentReads(book.getId());
         });
 }
+
+
+public LiveData<List<Book>> getFaveBook(){
+        return bookDao.getFaveBook();
+
+};
 
 }
