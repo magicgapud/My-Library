@@ -37,6 +37,9 @@ public class FavoritesBook extends AppCompatActivity {
         adapter = new BookRecViewAdapter(this, "FavoriteBooks", bookRepository);
 
         //adapter.setBooks(Utils.getInstance().getFavoriteBooks());
+        bookRepository.getFaveBook().observe(this, books->{
+                adapter.setBooks(books);
+        });
 
         bookRecView.setLayoutManager(new LinearLayoutManager(this));
         bookRecView.setAdapter(adapter);

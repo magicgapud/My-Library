@@ -73,6 +73,17 @@ public void deleteCurrentReads(Book book){
 public LiveData<List<Book>> getFaveBook(){
         return bookDao.getFaveBook();
 
-};
+}
+
+public void addFavorite(Book book, InsertCallback callback){
+        executorService.execute(() -> {
+            int rowid = bookDao.addFavorite(book.getId());
+
+            boolean result = rowid > 0;
+
+            callback.onResult(result);
+        });
+
+}
 
 }

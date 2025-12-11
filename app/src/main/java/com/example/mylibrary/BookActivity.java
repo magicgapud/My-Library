@@ -1,13 +1,12 @@
 package com.example.mylibrary;
 
-import static com.example.mylibrary.Utils.favoriteBooks;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,45 +105,36 @@ public class BookActivity extends AppCompatActivity {
 
     private void handleFavoriteBook(Book incomingBook) {
         //ArrayList<Book> favoriteBooks = Utils.getInstance().getFavoriteBooks();
-        
-        bookRepository.getFaveBook().observe(this,favorite -> {
+
+        bookRepository.getFaveBook().observe(this, favorite -> {
             boolean exists = false;
-            for (Book b: favorite){
-                if(b.getId() == incomingBook.getId()){
+            for (Book b : favorite) {
+                if (b.getId() == incomingBook.getId()) {
                     exists = true;
                     break;
                 }
             }
             btnAddFavorites.setEnabled(!exists);
         });
-        
-        boolean isExistFavorites = false;
 
-        for(Book b: favoriteBooks){
-            if (b.getId() == incomingBook.getId()){
-                isExistFavorites = true;
+        btnAddFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookRepository.addFavorite(incomingBook, success -> {
+                    runOnUiThread(() -> {
+                        if (success) {
+                            Toast.makeText(BookActivity.this, "Saved " + incomingBook.getName() + " to " +
+                                    "Favorites", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(BookActivity.this, FavoritesBook.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(BookActivity.this, "Something went wrong",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                });
             }
-
-        }
-
-        if(isExistFavorites){
-            btnAddFavorites.setEnabled(false);
-        }else{
-            btnAddFavorites.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(Utils.getInstance().addFavorites(incomingBook)){
-                        Toast.makeText(BookActivity.this, "Saved " + incomingBook.getName() + " to " +
-                                "Favorites", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(BookActivity.this, FavoritesBook.class);
-                        startActivity(intent);
-                    }else{
-                        Toast.makeText(BookActivity.this, "Something went wrong",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
+        });
     }
 
     private void handleWantToReadBook(Book book) {
