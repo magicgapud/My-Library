@@ -86,4 +86,17 @@ public void addFavorite(Book book, InsertCallback callback){
 
 }
 
+    public LiveData<List<Book>> getWantToReadBook() {
+        return bookDao.getWantToReadBook();
+    }
+
+    public void addWant2ReadBooks(int id, InsertCallback callback){
+        executorService.execute(()->{
+            int rowid = bookDao.addWant2ReadBooks(id);
+
+            boolean result = rowid > 0;
+            callback.onResult(result);
+        });
+    }
+
 }

@@ -39,7 +39,9 @@ public class WantToRead extends AppCompatActivity {
 
         bookRecView.setLayoutManager(new LinearLayoutManager(this));
 
-        //adapter.setBooks(Utils.getWantToReadBooks());
+        bookRepository.getWantToReadBook().observe(this, books -> {
+            adapter.setBooks(books);
+        });
         bookRecView.setAdapter(adapter);
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {

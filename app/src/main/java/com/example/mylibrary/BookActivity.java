@@ -139,21 +139,21 @@ public class BookActivity extends AppCompatActivity {
 
     private void handleWantToReadBook(Book book) {
 
-        ArrayList<Book> wantToReadBooks = Utils.getInstance().getWantToReadBooks();
-        boolean isExistWantToReadBooks = false;
-
-        for (Book b : wantToReadBooks) {
-            if (b.getId() == book.getId()) {
-                isExistWantToReadBooks = true;
+        bookRepository.getWantToReadBook().observe(this, books -> {
+            boolean exist = false;
+            for (Book b : books) {
+                if (b.getId() == book.getId()) {
+                    exist = true;
+                }
+                btnWant2Read.setEnabled(!exist);
             }
-        }
-        if (isExistWantToReadBooks) {
-            btnWant2Read.setEnabled(false);
-        } else {
-            btnWant2Read.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (Utils.getInstance().addWantToReadBooks(book)) {
+        });
+
+        btnWant2Read.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookRepository.addWant2ReadBooks(book.getId(), callback -> {
+                    if (callback) {
                         Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to " +
                                 "Wishlist", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BookActivity.this, WantToRead.class);
@@ -162,9 +162,9 @@ public class BookActivity extends AppCompatActivity {
                         Toast.makeText(BookActivity.this, "Something went wrong",
                                 Toast.LENGTH_SHORT).show();
                     }
-                }
-            });
-        }
+                });
+            }
+        });
     }
 
     private void handleAlreadyReadBook(Book book) {
