@@ -44,6 +44,6 @@ public interface BookDao {
     @Query("SELECT * FROm Book WHERE wishlist = 'Y'")
     LiveData<List<Book>> getWantToReadBook();
 
-    @Query("UPDATE Book SET wishlist = 'Y' WHERE id = :id LIMIT 1")
+    @Query("UPDATE Book SET wishlist = 'Y' WHERE id = :id")
     int addWant2ReadBooks(int id);
 }
