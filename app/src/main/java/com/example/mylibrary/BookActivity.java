@@ -169,25 +169,21 @@ public class BookActivity extends AppCompatActivity {
 
     private void handleAlreadyReadBook(Book book) {
 
-        ArrayList<Book> alreadyReadBooks = Utils.getInstance().getAlreadyReadBooks();
-        boolean isExistInAlreadyReadBooks = false;
-
-        for (Book b : alreadyReadBooks) {
-            if (b.getId() == book.getId()) {
-                isExistInAlreadyReadBooks = true;
+        bookRepository.getAlreadyRead().observe(this, books -> {
+            boolean exist = false;
+            for (Book b : books) {
+                if (b.getId() == book.getId()) {
+                    exist = true;
+                }
             }
-        }
+            btnAlreadyRead.setEnabled(!exist);
+        });
 
-       /*
-       to handle already read books
-        */
-        if (isExistInAlreadyReadBooks) {
-            btnAlreadyRead.setEnabled(false);
-        } else {
-            btnAlreadyRead.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (Utils.getInstance().addToAlreadyRead(book)) {
+        btnAlreadyRead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookRepository.addAlreadyReadBook(book, callback -> {
+                    if (callback) {
                         Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to Already " +
                                         "Read Books",
                                 Toast.LENGTH_SHORT).show();
@@ -197,9 +193,9 @@ public class BookActivity extends AppCompatActivity {
                         Toast.makeText(BookActivity.this, "Something wrong happened, try again",
                                 Toast.LENGTH_SHORT).show();
                     }
-                }
-            });
-        }
+                });
+            }
+        });
     }
 
     private void setData(Book book) {

@@ -41,7 +41,9 @@ public class AlreadyReadBookActivity extends AppCompatActivity {
         bookRecView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        //adapter.setBooks(Utils.getAlreadyReadBooks());
+        bookRepository.getAlreadyRead().observe(this, books -> {
+            adapter.setBooks(books);
+        });
         bookRecView.setAdapter(adapter);
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
