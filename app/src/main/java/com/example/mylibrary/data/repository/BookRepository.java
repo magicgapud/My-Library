@@ -111,4 +111,22 @@ public void addFavorite(Book book, InsertCallback callback){
             callback.onResult(result);
         });
     }
+
+    public void deleteFavorite(Book book) {
+        executorService.execute(()->{
+            bookDao.deleteFavorite(book.getId());
+        });
+    }
+
+    public void deleteWishlist(Book book) {
+        executorService.execute(()->{
+            bookDao.deleteWishlist(book.getId());
+        });
+    }
+
+    public void deleteAlreadyReadBooks(Book book) {
+        executorService.execute(()->{
+            bookDao.deleteAlreadyReadBooks(book.getId());
+        });
+    }
 }

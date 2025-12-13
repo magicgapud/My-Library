@@ -41,6 +41,9 @@ public interface BookDao {
     @Query("UPDATE Book SET favorite = 'Y' WHERE id = :id")
     int addFavorite(int id);
 
+    @Query("UPDATE Book SET favorite = 'N' WHERE id = :id")
+    void deleteFavorite(int id);
+
     @Query("SELECT * FROm Book WHERE wishlist = 'Y'")
     LiveData<List<Book>> getWantToReadBook();
 
@@ -52,4 +55,10 @@ public interface BookDao {
 
     @Query("UPDATE Book SET alreadyreadbooks = 'Y' WHERE id = :id")
     int addAlreadyReadBook(int id);
+
+    @Query("UPDATE Book SET wishlist = 'N' WHERE id = :id")
+    void deleteWishlist(int id);
+
+    @Query("UPDATE Book SET alreadyreadbooks = 'N' WHERE id= :id")
+    void deleteAlreadyReadBooks(int id);
 }
