@@ -83,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Utils.getInstance();
-
     }
 
     private void initViews() {

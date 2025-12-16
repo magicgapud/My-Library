@@ -4,15 +4,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.LiveData;
 
+import com.bumptech.glide.Glide;
 import com.example.mylibrary.data.model.Book;
 import com.example.mylibrary.data.repository.BookRepository;
 
@@ -22,9 +26,10 @@ public class AddBooks extends AppCompatActivity {
 
     private EditText edttxtName, edttxtAuthor, edttxtPages, edttxtShortDesc, edttxtLongDesc;
 
-    private Button btnAddBook;
+    private Button btnAddBook, btnEditPhoto;
 
     private ArrayList Books;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,14 @@ public class AddBooks extends AppCompatActivity {
         });
 
 
+        btnEditPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imagePicker.launch("image/*");
+            }
+        });
+
+
     }
 
     private void initialize() {
@@ -83,10 +96,18 @@ public class AddBooks extends AppCompatActivity {
         edttxtLongDesc = findViewById(R.id.edttxtLongDesc);
 
         btnAddBook = findViewById(R.id.btnAddBook);
+        btnEditPhoto = findViewById(R.id.btnEditPhoto);
 
-
-
+        imageView = findViewById(R.id.imageView);
     }
+
+
+    private ActivityResultLauncher<String> imagePicker =
+            registerForActivityResult(new ActivityResultContracts.GetContent(),uri ->{
+                if(uri != null){
+                    Glide.with(this).load(uri).into(imageView);
+                }
+            });
 
 
 }
