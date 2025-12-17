@@ -1,6 +1,8 @@
 package com.example.mylibrary;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +22,14 @@ import com.bumptech.glide.Glide;
 import com.example.mylibrary.data.model.Book;
 import com.example.mylibrary.data.repository.BookRepository;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class AddBooks extends AppCompatActivity {
 
@@ -30,6 +39,7 @@ public class AddBooks extends AppCompatActivity {
 
     private ArrayList Books;
     private ImageView imageView;
+    private Uri selectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +115,50 @@ public class AddBooks extends AppCompatActivity {
     private ActivityResultLauncher<String> imagePicker =
             registerForActivityResult(new ActivityResultContracts.GetContent(),uri ->{
                 if(uri != null){
+                    selectedImage = uri;
                     Glide.with(this).load(uri).into(imageView);
                 }
             });
+
+
+    private void saveImageToAppStorate(){
+        if(selectedImage == null) return;
+
+        Executors.newSingleThreadExecutor().execute(()-> {
+            try {
+                File saveFile = copyUriToAppStorate(selectedImage);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private File copyUriToAppStorate (Uri uri) throws IOException  {
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+
+        File directory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        if(!directory.exists()) directory.mkdirs();
+
+        File file = new File(directory, "IMG_"+ System.currentTimeMillis()+ ".jpg");
+
+        OutputStream outputStream = new FileOutputStream(file);
+
+        byte[] buffer = new byte[1024];
+
+        int read;
+        while ((read = inputStream.read(buffer)) != -1){
+            outputStream.write(buffer, 0, read);
+        }
+
+        inputStream.close();
+        outputStream.close();
+
+        return file;
+
+
+
+    };
 
 
 }
