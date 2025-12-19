@@ -1,6 +1,9 @@
 package com.example.mylibrary.data.repository;
 
 import android.app.Application;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.net.Uri;
 
 import androidx.lifecycle.LiveData;
 
@@ -9,6 +12,8 @@ import com.example.mylibrary.data.local.AppDatabase;
 import com.example.mylibrary.data.model.Book;
 import com.example.mylibrary.data.utils.InsertCallback;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,15 +23,19 @@ public class BookRepository {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final BookDao bookDao;
 
+    private Context context;
     private LiveData<List<Book>> allBooks;
     private Book book;
-    public BookRepository(Application application){
+    public BookRepository(Application application, Context context){
         AppDatabase db = AppDatabase.getINSTANCE(application);
         bookDao = db.bookDao();
     }
 
 public void addBook(Book book, InsertCallback callback){
+
         executorService.execute(()->{
+
+
             long rowId = bookDao.insert(book);
 
             boolean result = rowId > 0;
@@ -35,6 +44,17 @@ public void addBook(Book book, InsertCallback callback){
 
         });
 }
+
+
+private File copyImageToStorage(Uri uri){
+
+    InputStream inputStream = getContentResolver().openInputStream(uri);
+}
+
+    private ContentResolver getContentResolver() {
+    }
+
+    ;
 
 public LiveData<Book> findById(int id){
         return bookDao.findById(id);
@@ -130,3 +150,7 @@ public void addFavorite(Book book, InsertCallback callback){
         });
     }
 }
+
+
+
+

@@ -32,7 +32,7 @@ public class WantToRead extends AppCompatActivity {
         });
 
 
-        BookRepository bookRepository = new BookRepository(getApplication());
+        BookRepository bookRepository = new BookRepository(getApplication(), getApplicationContext());
 
         adapter = new BookRecViewAdapter(this, "Wishlist", bookRepository);
         bookRecView = findViewById(R.id.bookWantToReadView);

@@ -52,7 +52,7 @@ public class AddBooks extends AppCompatActivity {
             return insets;
         });
 
-        BookRepository bookRepository = new BookRepository(getApplication());
+        BookRepository bookRepository = new BookRepository(getApplication(), getApplicationContext());
         initialize();
 
         btnAddBook.setOnClickListener(new View.OnClickListener() {
@@ -65,8 +65,8 @@ public class AddBooks extends AppCompatActivity {
                 String shortDesc = edttxtShortDesc.getText().toString();
                 String longDesc = edttxtLongDesc.getText().toString();
 
-                Book book = new Book(name, author, pages,shortDesc, longDesc,"" ,"" ,"","","",
-                        false);
+                Book book = new Book(name, author, pages, "", shortDesc, longDesc,"" ,"" ,"",""
+                        , false);
 
                 bookRepository.addBook(book, result -> {
 
@@ -126,14 +126,14 @@ public class AddBooks extends AppCompatActivity {
 
         Executors.newSingleThreadExecutor().execute(()-> {
             try {
-                File saveFile = copyUriToAppStorate(selectedImage);
+                File saveFile = copyUriToAppStorage(selectedImage);
             }catch (IOException e){
                 e.printStackTrace();
             }
         });
     }
 
-    private File copyUriToAppStorate (Uri uri) throws IOException  {
+    private File copyUriToAppStorage (Uri uri) throws IOException  {
         InputStream inputStream = getContentResolver().openInputStream(uri);
 
         File directory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);

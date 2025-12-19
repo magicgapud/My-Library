@@ -48,7 +48,7 @@ public class BookActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (null != intent) {
 
-            bookRepository = new BookRepository(getApplication());
+            bookRepository = new BookRepository(getApplication(), getApplicationContext());
             int bookId = intent.getIntExtra("bookId", -1);
             Log.d(TAG, "onCreate: "+ bookId);
             if (bookId != -1) {
