@@ -142,10 +142,11 @@
         android:id="@+id/btnAddBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:text="Add Book"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -158,6 +159,72 @@
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/tvInfoName"
+        android:layout_width="97dp"
+        android:layout_height="14dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/edttxtName"
+        app:layout_constraintHorizontal_bias="0.006"
+        app:layout_constraintStart_toStartOf="@+id/edttxtName"
+        app:layout_constraintTop_toBottomOf="@+id/edttxtName"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:id="@+id/tvInfoAuthor"
+        android:layout_width="101dp"
+        android:layout_height="14dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/edttxtAuthor"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/edttxtAuthor"
+        app:layout_constraintTop_toBottomOf="@+id/edttxtAuthor"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:id="@+id/tvInfoImage"
+        android:layout_width="113dp"
+        android:layout_height="13dp"
+        android:text=""
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/tvInfoPages"
+        android:layout_width="100dp"
+        android:layout_height="14dp"
+        android:text=""
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/edttxtPages"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/edttxtPages"
+        app:layout_constraintTop_toBottomOf="@+id/edttxtPages" />
+
+    <TextView
+        android:id="@+id/tvInfoShortDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/edttxtShortDesc"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/edttxtShortDesc"
+        app:layout_constraintTop_toBottomOf="@+id/edttxtShortDesc" />
+
+    <TextView
+        android:id="@+id/tvInfoLongDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/edttxtLongDesc"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/edttxtLongDesc"
+        app:layout_constraintTop_toBottomOf="@+id/edttxtLongDesc" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
