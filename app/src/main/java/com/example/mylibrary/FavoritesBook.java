@@ -31,7 +31,7 @@ public class FavoritesBook extends AppCompatActivity {
         });
 
 
-        BookRepository bookRepository = new BookRepository(getApplication(), getApplicationContext());
+        BookRepository bookRepository = new BookRepository(getApplication());
 
         bookRecView = findViewById(R.id.favoriteBookRecView);
         adapter = new BookRecViewAdapter(this, "FavoriteBooks", bookRepository);

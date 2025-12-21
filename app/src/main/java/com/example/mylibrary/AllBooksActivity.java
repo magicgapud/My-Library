@@ -35,7 +35,7 @@ public class AllBooksActivity extends AppCompatActivity {
             return insets;
         });
 
-        bookRepository = new BookRepository(getApplication(),getApplicationContext());
+        bookRepository = new BookRepository(getApplication());
 
         adapter = new BookRecViewAdapter(this, "AllBooks", bookRepository);
 

@@ -31,13 +31,13 @@ public class CurrentlyReadingBooks extends AppCompatActivity {
             return insets;
         });
 
-        BookRepository bookRepository = new BookRepository(getApplication(), getApplicationContext());
+        BookRepository bookRepository = new BookRepository(getApplication());
 
         currentlyReading = findViewById(R.id.currentlyReading);
         currentlyReading.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BookRecViewAdapter(this, "CurrentReads", bookRepository);
         //adapter.setBooks(Utils.getInstance().getCurrentlyReadingBooks());
-        bookRepository = new BookRepository(getApplication(), getApplicationContext());
+        bookRepository = new BookRepository(getApplication());
         bookRepository.getCurrentReads().observe(this,book ->{
                 adapter.setBooks(book);
         });

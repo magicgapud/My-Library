@@ -52,7 +52,7 @@ public class AddBooks extends AppCompatActivity {
             return insets;
         });
 
-        BookRepository bookRepository = new BookRepository(getApplication(), getApplicationContext());
+        BookRepository bookRepository = new BookRepository(getApplication());
         initialize();
 
         btnAddBook.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +68,7 @@ public class AddBooks extends AppCompatActivity {
                 Book book = new Book(name, author, pages, "", shortDesc, longDesc,"" ,"" ,"",""
                         , false);
 
-                bookRepository.addBook(book, result -> {
+                bookRepository.addBook(selectedImage, book, result -> {
 
                     runOnUiThread( ()->{
                         if(result){
@@ -119,46 +119,6 @@ public class AddBooks extends AppCompatActivity {
                     Glide.with(this).load(uri).into(imageView);
                 }
             });
-
-
-    private void saveImageToAppStorate(){
-        if(selectedImage == null) return;
-
-        Executors.newSingleThreadExecutor().execute(()-> {
-            try {
-                File saveFile = copyUriToAppStorage(selectedImage);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        });
-    }
-
-    private File copyUriToAppStorage (Uri uri) throws IOException  {
-        InputStream inputStream = getContentResolver().openInputStream(uri);
-
-        File directory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
-        if(!directory.exists()) directory.mkdirs();
-
-        File file = new File(directory, "IMG_"+ System.currentTimeMillis()+ ".jpg");
-
-        OutputStream outputStream = new FileOutputStream(file);
-
-        byte[] buffer = new byte[1024];
-
-        int read;
-        while ((read = inputStream.read(buffer)) != -1){
-            outputStream.write(buffer, 0, read);
-        }
-
-        inputStream.close();
-        outputStream.close();
-
-        return file;
-
-
-
-    };
 
 
 }

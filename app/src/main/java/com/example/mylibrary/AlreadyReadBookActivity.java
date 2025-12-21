@@ -33,7 +33,7 @@ public class AlreadyReadBookActivity extends AppCompatActivity {
             return insets;
         });
 
-        BookRepository bookRepository = new BookRepository(getApplication(), getApplicationContext());
+        BookRepository bookRepository = new BookRepository(getApplication());
 
         adapter = new BookRecViewAdapter(this, "AlreadyReadBooks",bookRepository);
 
