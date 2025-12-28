@@ -153,15 +153,17 @@ public class BookActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bookRepository.addWant2ReadBooks(book.getId(), callback -> {
-                    if (callback) {
-                        Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to " +
-                                "Wishlist", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(BookActivity.this, WantToRead.class);
-                        BookActivity.this.startActivity(intent);
-                    } else {
-                        Toast.makeText(BookActivity.this, "Something went wrong",
-                                Toast.LENGTH_SHORT).show();
-                    }
+                    runOnUiThread(()->{
+                        if (callback) {
+                            Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to " +
+                                    "Wishlist", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(BookActivity.this, WantToRead.class);
+                            BookActivity.this.startActivity(intent);
+                        } else {
+                            Toast.makeText(BookActivity.this, "Something went wrong",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
             }
         });
@@ -183,16 +185,18 @@ public class BookActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bookRepository.addAlreadyReadBook(book, callback -> {
-                    if (callback) {
-                        Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to Already " +
-                                        "Read Books",
-                                Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(BookActivity.this, AlreadyReadBookActivity.class);
-                        BookActivity.this.startActivity(intent);
-                    } else {
-                        Toast.makeText(BookActivity.this, "Something wrong happened, try again",
-                                Toast.LENGTH_SHORT).show();
-                    }
+                    runOnUiThread(()->{
+                        if (callback) {
+                            Toast.makeText(BookActivity.this, "Saved " + book.getName() + " to Already " +
+                                            "Read Books",
+                                    Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(BookActivity.this, AlreadyReadBookActivity.class);
+                            BookActivity.this.startActivity(intent);
+                        } else {
+                            Toast.makeText(BookActivity.this, "Something wrong happened, try again",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
             }
         });
